@@ -17,16 +17,16 @@ default = []
 [dependencies]
 cfg-if = "1.0"
 log = "0.4"
-linux_syscall_api = { path = "../../api/linux_syscall_api", optional = true }
-axhal = { path = "../../modules/axhal" }
-axtrap = { path = "../axtrap" }
-axruntime = { path = "../../modules/axruntime" }
-axconfig = { path = "../../modules/axconfig" }
-axalloc = { path = "../../modules/axalloc", optional = true }
-axlog = { path = "../../modules/axlog" }
+linux_syscall_api = { git = "https://github.com/Starry-OS/linux_syscall_api.git", optional = true }
+axhal = { git = "https://github.com/Starry-OS/axhal.git" }
+axtrap = { git = "https://github.com/Starry-OS/axtrap.git" }
+axruntime = { git = "https://github.com/Starry-OS/axruntime.git" }
+axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
+axalloc = { git = "https://github.com/Starry-OS/axalloc.git", optional = true }
+axlog = { git = "https://github.com/Starry-OS/axlog.git" }
 
 [build-dependencies]
-axconfig = { path = "../../modules/axconfig" }
+axconfig = { git = "https://github.com/Starry-OS/axconfig.git" }
 
 [target.'cfg(target_arch = "x86_64")'.dependencies]
 x86 = "0.52"
@@ -39,5 +39,5 @@ sbi-rt = { version = "0.0.2", features = ["legacy"] }
 
 [target.'cfg(target_arch = "aarch64")'.dependencies]
 aarch64-cpu = "9.3"
-of = { path = "../../crates/of"}
+of = { git = "https://github.com/Starry-OS/of.git"}
 tock-registers = "0.8"
