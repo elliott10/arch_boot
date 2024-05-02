@@ -22,8 +22,7 @@ unsafe extern "C" fn rust_entry(magic: usize, _mbi: usize) {
         axtrap::init_interrupt();
         axlog::init();
         axlog::set_max_level(option_env!("AX_LOG").unwrap_or("")); // no effect if set `log-level-*` features
-        #[cfg(feature = "alloc")]
-        crate::alloc::init_allocator();
+
         axhal::console::init_early();
         axhal::platform::dtables::init_primary();
         axhal::platform::time::init_early();
