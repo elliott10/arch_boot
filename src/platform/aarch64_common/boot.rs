@@ -73,12 +73,12 @@ unsafe extern "C" fn _start() -> ! {
         mov     sp, x8
 
         bl      {switch_to_el1}         // switch to EL1
+        bl      {enable_fp}             // enable fp/neon
 
         adrp    x0, {start}                // kernel image phys addr
         bl      {idmap_kernel}
 
         bl      {init_mmu}              // setup MMU
-        bl      {enable_fp}             // enable fp/neon
 
         mov     x8, {phys_virt_offset}  // set SP to the high address
         add     sp, sp, x8
