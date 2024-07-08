@@ -2,13 +2,14 @@ use axruntime::rust_main;
 
 mod boot;
 
-#[cfg(feature = "smp")]
-#[cfg(not(platform_family = "aarch64-raspi"))]
-pub mod mp;
-
-#[cfg(feature = "smp")]
-#[cfg(platform_family = "aarch64-raspi")]
-pub mod raspi_mp;
+cfg_if::cfg_if! {
+    if #[cfg(all(feature = "smp", platform_family = "aarch64-raspi"))] {
+        pub mod raspi_mp;
+        pub use raspi_mp as mp;
+    } else if #[cfg(all(feature = "smp"))]  {
+        pub mod mp;
+    }
+}
 
 /// The earliest entry point for the secondary CPUs.
 pub(crate) unsafe extern "C" fn rust_entry(cpu_id: usize, dtb: usize) {
