@@ -133,11 +133,19 @@ ap_entry64:
     .quad 0x40000000 | 0x83     # PRESENT | WRITABLE | HUGE_PAGE | paddr(0x4000_0000)
     .quad 0x80000000 | 0x83     # PRESENT | WRITABLE | HUGE_PAGE | paddr(0x8000_0000)
     .quad 0xc0000000 | 0x83     # PRESENT | WRITABLE | HUGE_PAGE | paddr(0xc000_0000)
-    .zero 8 * 508
+    .quad 0x100000000 | 0x83
+    .quad 0x140000000 | 0x83
+    .quad 0x180000000 | 0x83
+    .quad 0x1c0000000 | 0x83
+    .zero 8 * 504
 
 .Ltmp_pdpt_high:
     .quad 0x0000 | 0x83         # PRESENT | WRITABLE | HUGE_PAGE | paddr(0x0)
     .quad 0x40000000 | 0x83     # PRESENT | WRITABLE | HUGE_PAGE | paddr(0x4000_0000)
     .quad 0x80000000 | 0x83     # PRESENT | WRITABLE | HUGE_PAGE | paddr(0x8000_0000)
     .quad 0xc0000000 | 0x83     # PRESENT | WRITABLE | HUGE_PAGE | paddr(0xc000_0000)
-    .zero 8 * 508
+    .quad 0x100000000 | 0x83
+    .quad 0x140000000 | 0x83
+    .quad 0x180000000 | 0x83
+    .quad 0x1c0000000 | 0x83
+    .zero 8 * 504
