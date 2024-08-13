@@ -25,3 +25,16 @@ pub(crate) fn start_secondary_cpus(primary_cpu_id: usize) {
         }
     }
 }
+
+pub(crate) unsafe fn mp_boot_stack(sp: usize) -> *mut u8 {
+    for i in 0..SMP {
+        let stack_low = SECONDARY_BOOT_STACK[i].as_ptr() as usize;
+        let stack_high = stack_low + TASK_STACK_SIZE;
+
+        if sp >= stack_low && sp < stack_high {
+            log::info!("get sp {:#x} in second boot_stack", sp);
+            return SECONDARY_BOOT_STACK[i].as_mut_ptr()
+        }
+    }
+    return 0 as *mut u8;
+}
