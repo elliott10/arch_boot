@@ -3,9 +3,6 @@ use axconfig::TASK_STACK_SIZE;
 use axhal::platform::mem::init_mmu;
 use tock_registers::interfaces::{ReadWriteable, Readable, Writeable};
 
-#[link_section = ".bss.stack"]
-static mut BOOT_STACK: [u8; TASK_STACK_SIZE] = [0; TASK_STACK_SIZE];
-
 unsafe fn switch_to_el1() {
     SPSel.write(SPSel::SP::ELx);
     SP_EL0.set(0);
@@ -82,6 +79,7 @@ unsafe extern "C" fn _start() -> ! {
 
         mov     x8, {phys_virt_offset}  // set SP to the high address
         add     sp, sp, x8
+        mov     x29, sp                 // fp save
 
         mov     x0, x19                 // call rust_entry(cpu_id, dtb)
         mov     x1, x20
@@ -91,7 +89,7 @@ unsafe extern "C" fn _start() -> ! {
         switch_to_el1 = sym switch_to_el1,
         init_mmu = sym init_mmu,
         enable_fp = sym enable_fp,
-        boot_stack = sym BOOT_STACK,
+        boot_stack = sym crate::BOOT_STACK,
         start = sym _start,
         idmap_kernel = sym axhal::platform::mem::idmap_kernel,
         boot_stack_size = const TASK_STACK_SIZE,
@@ -118,6 +116,7 @@ unsafe extern "C" fn _start_secondary() -> ! {
 
         mov     x8, {phys_virt_offset}  // set SP to the high address
         add     sp, sp, x8
+        mov     x29, sp                 // fp save
 
         mov     x0, x19                 // call rust_entry_secondary(cpu_id)
         ldr     x8, ={entry}

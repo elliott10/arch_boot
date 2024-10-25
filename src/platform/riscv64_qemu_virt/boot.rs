@@ -1,9 +1,6 @@
 use axconfig::{PHYS_VIRT_OFFSET, TASK_STACK_SIZE};
 use riscv::register::satp;
 
-#[link_section = ".bss.stack"]
-static mut BOOT_STACK: [u8; TASK_STACK_SIZE] = [0; TASK_STACK_SIZE];
-
 #[link_section = ".data.boot_page_table"]
 static mut BOOT_PT_SV39: [u64; 512] = [0; 512];
 
@@ -49,7 +46,7 @@ unsafe extern "C" fn _start() -> ! {
         j       .",
         phys_virt_offset = const PHYS_VIRT_OFFSET,
         boot_stack_size = const TASK_STACK_SIZE,
-        boot_stack = sym BOOT_STACK,
+        boot_stack = sym crate::BOOT_STACK,
         init_boot_page_table = sym init_boot_page_table,
         init_mmu = sym init_mmu,
         entry = sym super::rust_entry,
